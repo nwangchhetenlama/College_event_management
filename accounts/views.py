@@ -14,6 +14,7 @@ def user_login(request):
         user=authenticate(request,username=username,password=password)
 
         if user:
+            
             login(request,user)
             redirect('/events/')
 
