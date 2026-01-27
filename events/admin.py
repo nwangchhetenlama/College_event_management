@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Event
+from .models import Event,EventRegistration
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -16,4 +16,5 @@ class EventAdmin(admin.ModelAdmin):
     )
     search_fields = ('title', 'venue')
     list_filter = ('date',)
-    
+
+admin.site.register(EventRegistration)

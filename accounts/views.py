@@ -14,9 +14,9 @@ def user_login(request):
         user=authenticate(request,username=username,password=password)
 
         if user:
-            
+
             login(request,user)
-            redirect('/events/')
+            return redirect('/')
 
         else:
             messages.error(request,"username or password wrong.")
@@ -45,7 +45,7 @@ def user_register(request):
                 messages.error(request,"username already exists")
 
             else:
-                user=User.objects.create(username=username,email=email,password=password1)
+                user=User.objects.create_user(username=username,email=email,password=password1)
                 user.save()
                 messages.success(request,"user register succesfully")
                 return redirect('/accounts/login')

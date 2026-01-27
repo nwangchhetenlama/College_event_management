@@ -1,6 +1,11 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 {% if event.banner %}
 <div style="
     background-image: url('{{ event.banner.url }}');
@@ -18,8 +23,19 @@
 <p><strong>Time:</strong> {{ event.time }}</p>
 <p><strong>Venue:</strong> {{ event.venue }}</p>
 <p><strong>Registration Deadline:</strong> {{ event.registration_deadline }}</p>
-<p><strong>Max Participants:</strong> {{ event.max_participants }}</p>
+<p><strong>Seats:</strong> {{ total_participants }} / {{ event.max_participants }}</p>
 
-<a href="#" class="btn btn-success mt-3">Register for Event</a>
-<a href="/" class="btn btn-secondary mt-3">Back to Events</a>
+{% if already_registered %}
+    <button class="btn btn-secondary" disabled>Already Registered</button>
+{% else %}
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-success">Register for Event</button>
+    </form>
+{% endif %}
+
+<a href="/" class="btn btn-outline-dark mt-3">Back</a>
+
+
+
 {% endblock %}
