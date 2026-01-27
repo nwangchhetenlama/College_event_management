@@ -1,0 +1,25 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+{% if event.banner %}
+<div style="
+    background-image: url('{{ event.banner.url }}');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+"></div>
+{% endif %}
+<h3>{{ event.title }}</h3>
+
+<p><strong>Description:</strong> {{ event.description }}</p>
+<p><strong>Date:</strong> {{ event.date }}</p>
+<p><strong>Time:</strong> {{ event.time }}</p>
+<p><strong>Venue:</strong> {{ event.venue }}</p>
+<p><strong>Registration Deadline:</strong> {{ event.registration_deadline }}</p>
+<p><strong>Max Participants:</strong> {{ event.max_participants }}</p>
+
+<a href="#" class="btn btn-success mt-3">Register for Event</a>
+<a href="/" class="btn btn-secondary mt-3">Back to Events</a>
+{% endblock %}

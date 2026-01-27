@@ -12,6 +12,9 @@ class Event(models.Model):
     venue=models.CharField(max_length=100)
     registration_deadline=models.DateField()
     max_participants=models.IntegerField()
+    banner=models.ImageField(upload_to="event_banners/",null=True,blank=True)
+
+
     created_at=models.DateTimeField(auto_now_add=True)
 
 

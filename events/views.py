@@ -10,13 +10,13 @@ from datetime import date
 def event_list(request):
 
     events=Event.objects.filter(date__gte=date.today()).order_by('date')
-    return render(request,'event_list.html',context={'events':events})
+    return render(request,'events/event_list.html',context={'events':events})
 
 
 def event_detail(request,id):
 
     event=Event.objects.get(id=id)
 
-    return render(request,'event_detail.html',context={'event':event})
+    return render(request,'events/event_detail.html',context={'event':event})
 
     
