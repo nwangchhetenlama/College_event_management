@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 from datetime import date
 from django.core.mail import send_mail
-
+from django.contrib.admin.views.decorators import staff_member_required
 # def base(request):
 #     return render(request,'base.html')
 
@@ -16,7 +16,7 @@ def event_list(request):
     events=Event.objects.filter(date__gte=date.today()).order_by('date')
     return render(request,'events/event_list.html',context={'events':events})
 
-@login_required
+@login_required(login_url='login')
 def event_detail(request,id):
 
     event=Event.objects.get(id=id)
@@ -58,3 +58,31 @@ def event_detail(request,id):
     return render(request,'events/event_detail.html',context={'event':event,'already_registered':already_registered,'total_participants':total_participants})
 
 
+@staff_member_required(login_url='login')
+def create_event(request):
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        venue = request.POST.get('venue')
+        registration_deadline = request.POST.get('registration_deadline')
+        max_participants = request.POST.get('max_participants')
+        banner = request.FILES.get('banner')
+
+        Event.objects.create(
+            title=title,
+            description=description,
+            date=date,
+            time=time,
+            venue=venue,
+            registration_deadline=registration_deadline,
+            max_participants=max_participants,
+            banner=banner
+        )
+
+        messages.success(request, "Event created successfully!")
+        return redirect('event_list')
+
+    return render(request, 'events/create_event.html')

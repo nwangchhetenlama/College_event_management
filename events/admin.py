@@ -17,4 +17,8 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title', 'venue')
     list_filter = ('date',)
 
-admin.site.register(EventRegistration)
+
+
+@admin.register(EventRegistration)
+class EventRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('event', 'user', 'registered_at')
