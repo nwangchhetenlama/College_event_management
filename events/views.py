@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.contrib.admin.views.decorators import staff_member_required
 # def base(request):
 #     return render(request,'base.html')
-
+from .form import Eventform
 
 
 def event_list(request):
@@ -24,7 +24,11 @@ def event_detail(request,id):
     total_participants=EventRegistration.objects.filter(event=event).count()
 
     if request.method=='POST':
-        if already_registered:
+
+
+        if event.registration_deadline < date.today():
+            messages.error(request, "Registration deadline has passed.")
+        elif already_registered:
             messages.error(request,"the user is already registered.")
 
         elif total_participants>=event.max_participants:
@@ -59,30 +63,79 @@ def event_detail(request,id):
 
 
 @staff_member_required(login_url='login')
-def create_event(request):
+def createEvent(request):
+
+    form = Eventform()
 
     if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        date = request.POST.get('date')
-        time = request.POST.get('time')
-        venue = request.POST.get('venue')
-        registration_deadline = request.POST.get('registration_deadline')
-        max_participants = request.POST.get('max_participants')
-        banner = request.FILES.get('banner')
+        form = Eventform(request.POST, request.FILES)
 
-        Event.objects.create(
-            title=title,
-            description=description,
-            date=date,
-            time=time,
-            venue=venue,
-            registration_deadline=registration_deadline,
-            max_participants=max_participants,
-            banner=banner
-        )
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Event created successfully!")
+            return redirect('/')
 
-        messages.success(request, "Event created successfully!")
-        return redirect('event_list')
+    context = {'form': form}
+    return render(request, 'events/create_event.html', context)
 
-    return render(request, 'events/create_event.html')
+
+
+@staff_member_required(login_url='login')
+def updateEvent(request,id):
+    event=Event.objects.get(id=id)
+    form=Eventform(instance=event)
+
+
+    if request.method=='POST':
+        form=Eventform(request.POST,request.FILES,  instance=event)
+        
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+
+
+    context={'form':form}
+    return render(request,'events/create_event.html',context)
+
+@staff_member_required(login_url='login')
+def deleteEvent(request,id):
+
+    event=Event.objects.get(id=id)
+    if request.method=='POST':
+        event.delete()
+        messages.success(request, "Event deleted successfully!")
+        return redirect("/")
+
+    return render(request,'events/delete.html',{'event':event})
+
+
+
+    # if request.method == 'POST':
+    #     title = request.POST.get('title')
+    #     description = request.POST.get('description')
+    #     date = request.POST.get('date')
+    #     time = request.POST.get('time')
+    #     venue = request.POST.get('venue')
+    #     registration_deadline = request.POST.get('registration_deadline')
+    #     max_participants = request.POST.get('max_participants')
+    #     banner = request.FILES.get('banner')
+
+    #     Event.objects.create(
+    #         title=title,
+    #         description=description,
+    #         date=date,
+    #         time=time,
+    #         venue=venue,
+    #         registration_deadline=registration_deadline,
+    #         max_participants=max_participants,
+    #         banner=banner
+    #     )
+
+    #     messages.success(request, "Event created successfully!")
+    #     return redirect('event_list')
+
+    # return render(request, 'events/create_event.html')
+
+
+
+

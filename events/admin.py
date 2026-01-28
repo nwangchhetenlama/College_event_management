@@ -22,3 +22,6 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(EventRegistration)
 class EventRegistrationAdmin(admin.ModelAdmin):
     list_display = ('event', 'user', 'registered_at')
+    list_filter=('event',)
+
+    
