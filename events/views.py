@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 from datetime import date
+from django.core.mail import send_mail
+
 # def base(request):
 #     return render(request,'base.html')
 
@@ -30,6 +32,21 @@ def event_detail(request,id):
 
         else:
             EventRegistration.objects.create(user=request.user,event=event)
+            send_mail(subject="Event registration successful",message=f'''Hello {request.user.username},
+                    You have successfully registered for the event:
+
+                    Event: {event.title}
+                    Date: {event.date}
+                    Time: {event.time}
+                    Venue: {event.venue}
+
+                    Thank you for participating!
+                    ''',
+                    from_email=None,
+                    recipient_list=[request.user.email],
+                    fail_silently=True
+                    
+            )
             messages.success(request,"The user is registered for this event") 
 
         return redirect('event_detail', id=event.id)
@@ -39,3 +56,5 @@ def event_detail(request,id):
 
 
     return render(request,'events/event_detail.html',context={'event':event,'already_registered':already_registered,'total_participants':total_participants})
+
+
