@@ -9,6 +9,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 # def base(request):
 #     return render(request,'base.html')
 from .form import Eventform
+from django.contrib.auth.decorators import login_required
+from .models import EventRegistration
 
 
 def event_list(request):
@@ -110,32 +112,12 @@ def deleteEvent(request,id):
 
 
 
-    # if request.method == 'POST':
-    #     title = request.POST.get('title')
-    #     description = request.POST.get('description')
-    #     date = request.POST.get('date')
-    #     time = request.POST.get('time')
-    #     venue = request.POST.get('venue')
-    #     registration_deadline = request.POST.get('registration_deadline')
-    #     max_participants = request.POST.get('max_participants')
-    #     banner = request.FILES.get('banner')
+@login_required(login_url='login')
+def profile(request):
+    registrations=EventRegistration.objects.filter(user=request.user).select_related('event').order_by('-registered_at')
 
-    #     Event.objects.create(
-    #         title=title,
-    #         description=description,
-    #         date=date,
-    #         time=time,
-    #         venue=venue,
-    #         registration_deadline=registration_deadline,
-    #         max_participants=max_participants,
-    #         banner=banner
-    #     )
+    context={'registrations':registrations}
 
-    #     messages.success(request, "Event created successfully!")
-    #     return redirect('event_list')
-
-    # return render(request, 'events/create_event.html')
-
-
+    return render(request,'accounts/profile.html',context)
 
 

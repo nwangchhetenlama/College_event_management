@@ -9,6 +9,7 @@ urlpatterns = [
     path('create/',views.createEvent,name="createEvent"),
     path('update/<int:id>/',views.updateEvent,name="updateEvent"),
     path('delete/<int:id>/',views.deleteEvent,name="deleteEvent"),
+    path('profile/',views.profile,name="profile")
     
 
 ]
