@@ -112,12 +112,14 @@ def deleteEvent(request,id):
 
 
 
+
 @login_required(login_url='login')
 def profile(request):
-    registrations=EventRegistration.objects.filter(user=request.user).select_related('event').order_by('-registered_at')
+    registrations = EventRegistration.objects.filter(
+        user=request.user
+    ).select_related('event').order_by('-registered_at')
 
-    context={'registrations':registrations}
-
-    return render(request,'accounts/profile.html',context)
-
-
+    context = {
+        'registrations': registrations
+    }
+    return render(request, 'events/profile.html', context)

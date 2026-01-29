@@ -1,0 +1,47 @@
+{% extends 'events/base.html' %}
+{% block content %}
+
+<h3 class="mb-4">My Profile</h3>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5>{{ request.user.username }}</h5>
+        <p class="mb-1">{{ request.user.email }}</p>
+        <small class="text-muted">
+            Joined on {{ request.user.date_joined|date:"d M Y" }}
+        </small>
+    </div>
+</div>
+
+<h4>Registered Events</h4>
+
+{% if registrations %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Registered On</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reg in registrations %}
+        <tr>
+            <td>
+                <a href="{% url 'event_detail' reg.event.id %}">
+                    {{ reg.event.title }}
+                </a>
+            </td>
+            <td>{{ reg.event.date }}</td>
+            <td>{{ reg.event.venue }}</td>
+            <td>{{ reg.registered_at|date:"d M Y" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You have not registered for any events yet.</p>
+{% endif %}
+
+{% endblock %}
