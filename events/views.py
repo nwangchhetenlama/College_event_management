@@ -6,8 +6,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.core.mail import send_mail
 from django.contrib.admin.views.decorators import staff_member_required
-# def base(request):
-#     return render(request,'base.html')
+
 from .form import Eventform
 from django.contrib.auth.decorators import login_required
 from .models import EventRegistration
@@ -123,3 +122,6 @@ def profile(request):
         'registrations': registrations
     }
     return render(request, 'events/profile.html', context)
+
+#search
+#cart
