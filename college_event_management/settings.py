@@ -12,24 +12,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Single SECRET_KEY from env
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-kzq5de78*&qy-m+k)!m7bd6h-6cpp6anluctzti@og_f7*x@1g')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kzq5de78*&qy-m+k)!m7bd6h-6cpp6anluctzti@og_f7*x@1g'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Single DEBUG from env
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
+
 CSRF_TRUSTED_ORIGINS = [
+    'https://college-event-management-production.up.railway.app',  \
     'https://college-event-management.up.railway.app',
 ]
-
 # Application definition
 
 INSTALLED_APPS = [
