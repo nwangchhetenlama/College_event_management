@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,8 +44,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseFds',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,3 +137,12 @@ EMAIL_HOST_USER = 'chhetenlama86@gmail.com'
 EMAIL_HOST_PASSWORD = 'bmmk jgrz hslg imgv'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Secret key from env
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-key')
+
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
