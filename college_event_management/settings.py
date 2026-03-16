@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-kzq5de78*&qy-m+k)!m7bd6h-6cpp6anluctzti@og_f7*x@1g
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://college-event-management.up.railway.app',
+]
 
 # Application definition
 
